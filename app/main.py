@@ -1,6 +1,13 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QGridLayout, QPushButton, QLineEdit, QLabel, QHBoxLayout
 
+#importing custom function
+from run_command import run_command
+
+
+
+
+
 main_window_stylesheet = """
 
 QMainWindow{
@@ -33,6 +40,9 @@ class Vijay(QMainWindow):
         self.init_ui()
         self.setStyleSheet(main_window_stylesheet)
 
+    
+    
+
     def init_ui(self):
         # Create a central widget to hold the layout
         central_widget = QWidget(self)
@@ -52,11 +62,15 @@ class Vijay(QMainWindow):
         #cmd section customization
         cmd_section = QHBoxLayout()
        
-        cmd_input = QLineEdit("", self)
+        self.cmd_input = QLineEdit("", self)
+        #adding event lister for enter press
+        self.cmd_input.returnPressed.connect(lambda: self.run_command(self.cmd_input.text()))
         run_cmd_btn = QPushButton('Run Command')
+        #adding click event from running the command
+        run_cmd_btn.clicked.connect(lambda: self.run_command(self.cmd_input.text()))
         
 
-        cmd_section.addWidget(cmd_input)
+        cmd_section.addWidget(self.cmd_input)
         cmd_section.addWidget(run_cmd_btn)
 
         #registering layout in grid layout
@@ -65,6 +79,10 @@ class Vijay(QMainWindow):
 
         # Set the layout for the central widget
         central_widget.setLayout(grid_layout)
+
+    def run_command(self, arg):
+        run_command(arg)
+        self.cmd_input.clear()
 
 
         
